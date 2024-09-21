@@ -3,6 +3,7 @@ package com.nisumexercise.apiUsers.controller;
 import com.nisumexercise.apiUsers.dto.UserDto;
 import com.nisumexercise.apiUsers.entity.User;
 import com.nisumexercise.apiUsers.service.UserService;
+import com.nisumexercise.apiUsers.utils.MethodService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,10 +20,12 @@ public class UserController {
 
     @Autowired
     private final UserService userService;
+    @Autowired
+    private final MethodService methodService;
 
     @PostMapping
     public ResponseEntity<?> createUser(@RequestBody UserDto userdto) {
         User user = userService.createUser(userdto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(methodService.mapToResponse(user));
     }
 }

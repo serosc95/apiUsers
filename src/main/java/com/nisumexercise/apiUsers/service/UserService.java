@@ -23,7 +23,7 @@ public class UserService {
     @Autowired
     private final PasswordEncoder passwordEncoder;
 
-    public User createUser(UserDto userDto){
+    public User createUser(UserDto userDto) {
         if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
             throw new UserAlreadyExistsException("El correo ya esta registrado");
         }

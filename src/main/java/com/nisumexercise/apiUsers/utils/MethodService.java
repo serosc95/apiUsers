@@ -13,13 +13,14 @@ import java.util.stream.Collectors;
 @Service
 public class MethodService {
 
-    public List<Phone> mapToPhoneEntity(List<PhoneDto> phones) {
+    public List<Phone> mapToPhoneEntity(List<PhoneDto> phones, User user) {
         return phones.stream().map(phoneDto -> {
-            Phone phone = new Phone();
-            phone.setNumber(phoneDto.getNumber());
-            phone.setCitycode(phoneDto.getCitycode());
-            phone.setContrycode(phoneDto.getContrycode());
-            return phone;
+            return Phone.builder()
+                    .number(phoneDto.getNumber())
+                    .citycode(phoneDto.getCitycode())
+                    .contrycode(phoneDto.getContrycode())
+                    .user(user)
+                    .build();
         }).collect(Collectors.toList());
     }
 

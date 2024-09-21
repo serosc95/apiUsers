@@ -1,6 +1,5 @@
-package com.nisumexercise.apiUsers.controller;
+package com.nisumexercise.apiUsers.exception;
 
-import com.nisumexercise.apiUsers.exception.UserAlreadyExistsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -32,7 +31,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, String>> handleAllExceptions(Exception ex) {
         Map<String, String> error = new HashMap<>();
-        error.put("mensaje", "Ha ocurrido un error interno");
+        error.put("mensaje", ex.toString());
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

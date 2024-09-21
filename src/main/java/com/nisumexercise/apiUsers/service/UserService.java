@@ -2,13 +2,13 @@ package com.nisumexercise.apiUsers.service;
 
 import com.nisumexercise.apiUsers.dto.UserDto;
 import com.nisumexercise.apiUsers.entity.User;
+import com.nisumexercise.apiUsers.exception.UserAlreadyExistsException;
 import com.nisumexercise.apiUsers.repository.UserRepository;
 import com.nisumexercise.apiUsers.utils.MethodService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.management.openmbean.KeyAlreadyExistsException;
 import java.time.LocalDateTime;
 
 @Service
@@ -22,7 +22,7 @@ public class UserService {
 
     public User createUser(UserDto userDto) {
         if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
-            throw new KeyAlreadyExistsException("El correo ya registrado");
+            throw new UserAlreadyExistsException("El correo ya esta registrado");
         }
 
         User user = new User();
@@ -32,6 +32,7 @@ public class UserService {
         user.setPhones(methodService.mapToPhoneEntity(userDto.getPhones()));
         user.setCreated(LocalDateTime.now());
         user.setModified(LocalDateTime.now());
+        user.setLastLogin(LocalDateTime.now());
 
         return userRepository.save(user);
     }

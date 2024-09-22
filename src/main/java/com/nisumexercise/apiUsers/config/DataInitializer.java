@@ -24,7 +24,6 @@ public class DataInitializer {
                 adminUser.setCreated(LocalDateTime.now());
                 adminUser.setModified(LocalDateTime.now());
                 adminUser.setLastLogin(LocalDateTime.now());
-                adminUser.setIsactive(false);
 
                 userRepository.save(adminUser);
                 System.out.println("Admin user created");

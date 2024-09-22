@@ -1,5 +1,6 @@
 package com.nisumexercise.apiUsers.service.impl;
 
+import com.nisumexercise.apiUsers.config.security.JwtTokenUtil;
 import com.nisumexercise.apiUsers.dto.UserDto;
 import com.nisumexercise.apiUsers.dto.response.UserResponseDto;
 import com.nisumexercise.apiUsers.entity.User;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
+    private final JwtTokenUtil jwtTokenUtil;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper modelMapper;
@@ -51,7 +53,7 @@ public class UserServiceImpl implements UserService {
                 .modified(user.getModified())
                 .lastLogin(user.getLastLogin())
                 .token(user.getToken())
-                .isactive(user.isIsactive())
+                .isactive(jwtTokenUtil.validateToken(user.getToken()))
                 .build();
     }
 }

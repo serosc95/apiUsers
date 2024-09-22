@@ -11,6 +11,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -30,6 +33,12 @@ public class UserServiceImpl implements UserService {
         user.setDates();
 
         return mapToResponse(userRepository.save(user));
+    }
+
+    @Override
+    public List<UserResponseDto> findAllUsers() {
+        List<User> users = userRepository.findAll();
+        return users.stream().map(this::mapToResponse).collect(Collectors.toList());
     }
 
     private UserResponseDto mapToResponse(User user) {

@@ -11,17 +11,16 @@ import com.nisumexercise.apiUsers.exception.UserEmailNotExistsException;
 import com.nisumexercise.apiUsers.repository.UserRepository;
 import com.nisumexercise.apiUsers.service.JWTService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class JWTserviceImpl implements JWTService {
 
-    @Autowired
     private final JwtTokenUtil jwtTokenUtil;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
@@ -33,7 +32,11 @@ public class JWTserviceImpl implements JWTService {
             User user = userOptional.get();
             boolean isValid = passwordEncoder.matches(credentials.getPassword(), user.getPassword());
             if (isValid) {
-                return mapToResponseTokens(user);
+                TokenResponseDto tokenResponseDto = mapToResponseTokens(user);
+                user.setLastLogin(LocalDateTime.now());
+                user.setToken(tokenResponseDto.getAccessToken());
+                userRepository.save(user);
+                return tokenResponseDto;
             }
             throw new PasswordIncorrectException("La contraseña es incorrecta");
         }

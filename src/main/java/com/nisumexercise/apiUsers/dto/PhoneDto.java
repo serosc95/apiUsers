@@ -1,12 +1,15 @@
 package com.nisumexercise.apiUsers.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class PhoneDto {
 
+    private Long id;
     @NotBlank(message = "El número de teléfono no puede estar vacío")
     @Pattern(regexp = "^(\\d{7,10})$", message = "El número de teléfono debe tener 10 dígitos")
     private String number;

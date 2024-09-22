@@ -2,13 +2,13 @@ package com.nisumexercise.apiUsers.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
 @Table(name = "phones")
-@Builder
+@NoArgsConstructor
 public class Phone {
 
     @Id

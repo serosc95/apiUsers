@@ -33,6 +33,11 @@ public class User {
     private LocalDateTime modified;
     private LocalDateTime lastLogin;
     private String token;
-    private boolean isActive;
+    private boolean isactive;
+
+    public void setDates() {
+        this.created = LocalDateTime.now();
+        this.modified = LocalDateTime.now();
+    }
 }
 

@@ -1,7 +1,7 @@
 package com.nisumexercise.apiUsers.controller;
 
 import com.nisumexercise.apiUsers.dto.UserDto;
-import com.nisumexercise.apiUsers.dto.response.UserResponseDTO;
+import com.nisumexercise.apiUsers.dto.response.UserResponseDto;
 import com.nisumexercise.apiUsers.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +21,7 @@ public class UserController {
 
     @PostMapping
     public ResponseEntity<?> createUser(@Valid @RequestBody UserDto userdto) {
-        UserResponseDTO user = userService.createUser(userdto);
+        UserResponseDto user = userService.createUser(userdto);
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 }

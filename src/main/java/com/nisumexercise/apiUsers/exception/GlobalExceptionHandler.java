@@ -15,7 +15,25 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UserAlreadyExistsException.class)
     public ResponseEntity<?> handleUserAlreadyExistsException(UserAlreadyExistsException e) {
-        return ResponseEntity.status(HttpStatus.CONFLICT)
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap("mensaje", e.getMessage()));
+    }
+
+    @ExceptionHandler(UserEmailNotExistsException.class)
+    public ResponseEntity<?> handleUserEmailNotExistsException(UserEmailNotExistsException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap("mensaje", e.getMessage()));
+    }
+
+    @ExceptionHandler(PasswordIncorrectException.class)
+    public ResponseEntity<?> handlePasswordIncorrectException(PasswordIncorrectException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Collections.singletonMap("mensaje", e.getMessage()));
+    }
+
+    @ExceptionHandler(RefreshTokenInvalidException.class)
+    public ResponseEntity<?> handleRefreshTokenInvalidException(RefreshTokenInvalidException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(Collections.singletonMap("mensaje", e.getMessage()));
     }
 

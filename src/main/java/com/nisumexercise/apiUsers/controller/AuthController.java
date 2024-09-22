@@ -1,52 +1,37 @@
 package com.nisumexercise.apiUsers.controller;
 
-import com.nisumexercise.apiUsers.config.security.JwtTokenUtil;
+import com.nisumexercise.apiUsers.dto.CredentialDto;
+import com.nisumexercise.apiUsers.dto.RefreshTokenDto;
+import com.nisumexercise.apiUsers.dto.response.RefreshTokenResponseDto;
+import com.nisumexercise.apiUsers.dto.response.TokenResponseDto;
+import com.nisumexercise.apiUsers.service.impl.JWTserviceImpl;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.Map;
-
 @RestController
 @RequestMapping("/api")
 @RequiredArgsConstructor
 public class AuthController {
 
-    @Autowired
-    private final JwtTokenUtil jwtTokenUtil;
+    private final JWTserviceImpl jwtService;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody Map<String, String> credentials) {
-        String username = credentials.get("username");
+    public ResponseEntity<?> login(@Valid @RequestBody CredentialDto credentials) {
 
-        String accessToken = jwtTokenUtil.generateAccessToken(username);
-        String refreshToken = jwtTokenUtil.generateRefreshToken(username);
-
-        Map<String, String> tokens = new HashMap<>();
-        tokens.put("accessToken", accessToken);
-        tokens.put("refreshToken", refreshToken);
-
-        return ResponseEntity.ok(tokens);
+        TokenResponseDto tokens = jwtService.validateCredentials(credentials);
+        return ResponseEntity.status(HttpStatus.OK).body(tokens);
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<?> refreshToken(@RequestBody Map<String, String> request) {
-        String refreshToken = request.get("refreshToken");
-        if (jwtTokenUtil.validateToken(refreshToken)) {
-            String username = jwtTokenUtil.getUsernameFromToken(refreshToken);
-            String newAccessToken = jwtTokenUtil.generateAccessToken(username);
+    public ResponseEntity<?> refreshToken(@Valid @RequestBody RefreshTokenDto request) {
 
-            Map<String, String> tokens = new HashMap<>();
-            tokens.put("accessToken", newAccessToken);
-
-            return ResponseEntity.ok(tokens);
-        } else {
-            return ResponseEntity.badRequest().body("Invalid refresh token");
-        }
+        RefreshTokenResponseDto accessToken = jwtService.validateRefreshToken(request.getRefreshToken());
+        return ResponseEntity.status(HttpStatus.OK).body(accessToken);
     }
 }

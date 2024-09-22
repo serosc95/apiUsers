@@ -1,7 +1,7 @@
 package com.nisumexercise.apiUsers.service.impl;
 
 import com.nisumexercise.apiUsers.dto.UserDto;
-import com.nisumexercise.apiUsers.dto.response.UserResponseDTO;
+import com.nisumexercise.apiUsers.dto.response.UserResponseDto;
 import com.nisumexercise.apiUsers.entity.User;
 import com.nisumexercise.apiUsers.exception.UserAlreadyExistsException;
 import com.nisumexercise.apiUsers.repository.UserRepository;
@@ -20,7 +20,7 @@ public class UserServiceImpl implements UserService {
     private final ModelMapper modelMapper;
 
     @Override
-    public UserResponseDTO createUser(UserDto userDto) {
+    public UserResponseDto createUser(UserDto userDto) {
         if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
             throw new UserAlreadyExistsException("El correo ya esta registrado");
         }
@@ -32,8 +32,8 @@ public class UserServiceImpl implements UserService {
         return mapToResponse(userRepository.save(user));
     }
 
-    private UserResponseDTO mapToResponse(User user) {
-        return UserResponseDTO.builder()
+    private UserResponseDto mapToResponse(User user) {
+        return UserResponseDto.builder()
                 .name(user.getName())
                 .email(user.getEmail())
                 .id(user.getId())

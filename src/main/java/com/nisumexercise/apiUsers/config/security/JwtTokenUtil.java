@@ -30,20 +30,20 @@ public class JwtTokenUtil {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String generateAccessToken(String username) {
-        return generateToken(username, accessTokenExpiration);
+    public String generateAccessToken(String email) {
+        return generateToken(email, accessTokenExpiration);
     }
 
-    public String generateRefreshToken(String username) {
-        return generateToken(username, refreshTokenExpiration);
+    public String generateRefreshToken(String email) {
+        return generateToken(email, refreshTokenExpiration);
     }
 
-    private String generateToken(String username, long expiration) {
+    private String generateToken(String email, long expiration) {
         Map<String, Object> claims = new HashMap<>();
 
         return Jwts.builder()
                 .setClaims(claims)
-                .setSubject(username)
+                .setSubject(email)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
@@ -59,7 +59,7 @@ public class JwtTokenUtil {
         }
     }
 
-    public String getUsernameFromToken(String token) {
+    public String getEmailFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
     }
 

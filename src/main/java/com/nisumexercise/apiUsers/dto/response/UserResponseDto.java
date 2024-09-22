@@ -10,7 +10,7 @@ import java.util.UUID;
 
 @Builder
 @Data
-public class UserResponseDTO {
+public class UserResponseDto {
 
     private UUID id;
     private String name;

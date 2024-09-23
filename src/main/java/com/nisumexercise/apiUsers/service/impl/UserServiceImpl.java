@@ -2,6 +2,7 @@ package com.nisumexercise.apiUsers.service.impl;
 
 import com.nisumexercise.apiUsers.config.security.JwtTokenUtil;
 import com.nisumexercise.apiUsers.dto.CreateUserDto;
+import com.nisumexercise.apiUsers.dto.PhoneDto;
 import com.nisumexercise.apiUsers.dto.UpdateUserDto;
 import com.nisumexercise.apiUsers.dto.response.UserResponseDto;
 import com.nisumexercise.apiUsers.entity.Phone;
@@ -17,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -91,11 +93,17 @@ public class UserServiceImpl implements UserService {
     }
 
     private UserResponseDto mapToResponse(User user) {
+        List<PhoneDto> phoneDto = Optional.ofNullable(user.getPhones())
+                .orElse(Collections.emptyList())
+                .stream()
+                .map(phone -> modelMapper.map(phone, PhoneDto.class))
+                .collect(Collectors.toList());
+
         return UserResponseDto.builder()
                 .name(user.getName())
                 .email(user.getEmail())
                 .id(user.getId())
-                .phones(user.getPhones())
+                .phones(phoneDto)
                 .created(user.getCreated())
                 .modified(user.getModified())
                 .lastLogin(user.getLastLogin())

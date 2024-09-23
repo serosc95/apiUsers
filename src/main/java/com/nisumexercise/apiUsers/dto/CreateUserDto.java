@@ -9,7 +9,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class UserDto {
+public class CreateUserDto {
 
     @NotBlank(message = "El nombre no puede estar vacío")
     private String name;
